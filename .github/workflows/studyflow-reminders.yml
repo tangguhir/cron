@@ -1,0 +1,19 @@
+name: StudyFlow Reminders
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  trigger-reminders:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Test ping (tanpa Laravel)
+        run: |
+          curl -sS --max-time 60 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36" https://tangguhir.web.id/studyflow/ping.php
+
+      - name: Trigger StudyFlow cron reminders
+        run: |
+          curl -sS --max-time 300 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36" "https://tangguhir.web.id/studyflow/cron/reminders?token=${{ secrets.CRON_TOKEN }}"
